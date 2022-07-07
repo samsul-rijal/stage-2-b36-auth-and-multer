@@ -1,5 +1,5 @@
 // import model
-const { user } = require("../../models");
+const { user, profile } = require("../../models");
 
 // import joi validation
 const Joi = require("joi");
@@ -39,8 +39,11 @@ exports.register = async (req, res) => {
       password: hashedPassword,
     });
 
+    await profile.create({idUser: newUser.id})
+
     // generate token
     const token = jwt.sign({ id: user.id }, process.env.TOKEN_KEY);
+
     
     res.status(200).send({
       status: "success...",
